@@ -1,0 +1,68 @@
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. 
+You may assume all four edges of the grid are all surrounded by water.
+
+ 
+
+Example 1:
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+
+Example 2:
+Input: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+Output: 3
+
+
+
+class Solution {
+    public static boolean[][] istrue;
+    
+    public void dfs(int r, int c, int rows, int cols, char[][]grid){
+        if(r >= rows || c >= cols || r < 0 || c < 0 || istrue[r][c] == true || grid[r][c] == '0') return;
+        
+        istrue[r][c] = true;
+        
+        dfs(r, c+1, rows, cols, grid);
+        dfs(r, c-1, rows, cols, grid);
+        dfs(r+1, c, rows, cols, grid);
+        dfs(r-1, c, rows, cols, grid);
+    }
+    // void print_m(boolean[][] istrue){
+    //     for(int i = 0; i < istrue.length; i++){
+    //         for(int j = 0; j < istrue[0].length; j++)
+    //             System.out.print(istrue[i][j] + " ");
+    //         System.out.println(" ");
+    //     }
+    // }
+    
+    public int numIslands(char[][] grid) {
+        int row = grid.length;
+        int col = grid[0].length;
+        istrue = new boolean[row][col];
+        int count  = 0;
+        // print_m(istrue);
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(grid[i][j] == '1' && istrue[i][j] == false){
+                    count++;
+                    dfs(i, j, row, col, grid);
+                    // print_m(istrue);
+                }
+            }
+        }
+        return count;
+
+        
+    }
+}
