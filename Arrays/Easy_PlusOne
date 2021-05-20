@@ -1,0 +1,52 @@
+Given a non-empty array of decimal digits representing a non-negative integer, increment one to the integer.
+
+The digits are stored such that the most significant digit is at the head of the list, and each element in the array contains a single digit.
+
+You may assume the integer does not contain any leading zero, except the number 0 itself.
+
+ 
+
+Example 1:
+
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Example 2:
+
+Input: digits = [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+Example 3:
+
+Input: digits = [0]
+Output: [1]
+
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int size = digits.length - 1;
+        int carry = 0;
+        int new_digit = 0;
+        
+        while(size >= 0){
+            if(size == digits.length - 1)
+                new_digit = digits[size] + 1;
+            else
+                new_digit = digits[size] + carry;
+            
+            //System.out.println(new_digit);
+            carry = new_digit / 10;
+            digits[size] = new_digit % 10;
+            size--;
+        }
+        if(carry > 0){
+            int new_size = digits.length + 1;
+            int[] out = new int[new_size];
+            out[0] = carry;
+            for( int x = 0; x < digits.length; x++){
+                out[x+1] = digits[x];
+            }
+            return out; 
+        }
+        return digits;
+    }
+}
