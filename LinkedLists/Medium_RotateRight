@@ -1,0 +1,51 @@
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+Runtime: 2 ms, faster than 11.41% of Java online submissions for Rotate List.
+Memory Usage: 38 MB, less than 86.90% of Java online submissions for Rotate List.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null || k <= 0) return head;
+        ListNode temp = head;
+
+        int length = 0;
+        while(temp != null){
+            temp = temp.next;
+            length++;
+        }
+        if(k % length == 0) return head;
+        int shifts =length - (k % length) + 1;
+        System.out.println(shifts);
+        
+        ListNode curr = head;
+        ListNode prev = null;
+        while(shifts > 1){
+            prev = curr;
+            curr = curr.next;
+            shifts--;
+        }
+        
+        ListNode newhead = curr;
+        // System.out.println("nhead"+ newhead.val);
+        while(curr != null && curr.next != null){
+            curr = curr.next;
+        }
+        // System.out.println("curr"+ curr.val);
+        // System.out.println("prev"+ prev.val);
+        // System.out.println("head"+ head.val);
+        curr.next = head;
+        prev.next = null;
+        return newhead;
+        
+    }
+}
