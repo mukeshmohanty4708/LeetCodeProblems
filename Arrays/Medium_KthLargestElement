@@ -1,0 +1,40 @@
+215. Kth Largest Element in an Array
+Medium
+Given an integer array nums and an integer k, return the kth largest element in the array.
+
+Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+
+Input: nums = [3,2,1,5,6,4], k = 2
+Output: 5
+Example 2:
+
+Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+Output: 4
+
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int max, index = 0, count = 0;
+        int ele = k;
+        int[] op = new int[k];
+        while(k > 0){
+            max = Integer.MIN_VALUE;
+            for(int i=0; i<nums.length; i++){
+                if(nums[i] > max){
+                    index = i;
+                    max = nums[i];
+                }
+                
+            }
+            nums[index] = Integer.MIN_VALUE;
+            op[count++] = max;
+            k--;
+            // for(int e : nums) System.out.print(e + " ");
+            // System.out.println("End");
+        }
+        
+        return op[ele-1];
+    }
+}
