@@ -1,0 +1,82 @@
+There are n cities connected by some number of flights. You are given an array flights where flights[i] = [fromi, toi, pricei] indicates that there is a flight from city fromi to city toi with cost pricei.
+You are also given three integers src, dst, and k, return the cheapest price from src to dst with at most k stops. If there is no such route, return -1.
+
+Input: n = 3, flights = [[0,1,100],[1,2,100],[0,2,500]], src = 0, dst = 2, k = 1
+Output: 200
+Explanation: The graph is shown.
+The cheapest price from city 0 to city 2 with at most 1 stop costs 200, as marked red in the picture.
+
+
+
+class Solution {
+    public static class Node{
+        public int destination;
+        public int weight;
+        Node(int destination, int weight){
+            this.destination = destination;
+            this.weight = weight;
+        }
+        
+    };
+    public Map<Integer, ArrayList<Solution.Node>> graph = new HashMap<>();
+    public int fare ;
+    public int[] visited;
+    
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        
+        fare = Integer.MAX_VALUE;
+        visited = new int[n]; // -1 unprocessed, 1 precessing
+        Arrays.fill(visited, -1);
+        //create the graph from the matrix
+        for(int i = 0; i < n; i++)
+            graph.put(i, new ArrayList<Node>());
+        
+        for(int i = 0; i < flights.length; i++){
+            if(graph.containsKey(flights[i][0])){
+                Node node = new Node(flights[i][1], flights[i][2]);
+                graph.get(flights[i][0]).add(node);
+            }
+            else{
+                graph.put(flights[i][0], new ArrayList<Node>());
+            }
+        }
+        System.out.println(graph.toString());
+        
+        //Define visited array to track the visiting nodes
+        
+        //Loop to recursive function to get the sum
+        for(int i = 0; i < n; i++){
+            if(visited[i] == -1){
+                helperGetSum(graph, src, dst, 0, k, visited);
+                // System.out.println(fare);
+            }   
+        }
+        if(fare == Integer.MAX_VALUE) return -1;
+        
+        return fare;
+    }
+    
+    public void helperGetSum(Map<Integer, ArrayList<Solution.Node>> graph, int curr, int dest, int sum, int k, int[] visited){
+        
+        if(k < -1) return;
+        
+        if(curr == dest){
+            System.out.println(sum + " : " + fare);
+            fare = Math.min(sum, fare);
+            return;
+        } 
+        visited[curr] = 1;
+        if(graph.get(curr).size() > 0){
+            for(Node adj : graph.get(curr)){
+                if(visited[adj.destination] != 1 && fare >= (adj.weight+sum))
+                    helperGetSum(graph, adj.destination, dest, adj.weight+sum, k-1, visited);
+            }
+        }
+        // System.out.println(fare);
+        visited[curr] = -1;
+        return;
+        
+        
+    }
+    
+}
