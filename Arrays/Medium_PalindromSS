@@ -1,0 +1,49 @@
+class Solution {
+    
+    
+    public boolean checkPalin(char[] arr, int start, int end){
+
+        while(start < end){
+            if(arr[start] != arr[end])
+                return false;
+            start++;
+            end--;
+        }
+        return true;
+        
+    }
+    
+    public String longestPalindrome(String s) {
+        
+        char[] arr = s.toCharArray();
+        StringBuffer bs = new StringBuffer();
+        if(s.length() == 1) return s;
+        if(s.length() == 2 && s.charAt(0) != s.charAt(1)) return Character.toString(s.charAt(0));
+    
+        for(int i = 0; i < arr.length - 1; i++){
+            List<String> ls = new ArrayList<>();
+            for(int j = arr.length - 1; j >= i; j--){
+                if(arr[i] == arr[j]){
+                    if(checkPalin(arr, i, j)){
+                        //Add to the list
+                        char[] nw = new char[j - i + 1];
+                        int count = 0;
+                        for(int p = i; p <= j; p++)
+                            nw[count++] = arr[p];
+                        ls.add(new String(nw));
+                        // System.out.println(ls);
+                        break;
+                    }
+                }
+            }
+            if(ls.size() > 0){
+                for(String str : ls){
+                    if(str.length() > bs.length())
+                        bs = new StringBuffer(str);
+                }
+            }
+        }
+        return bs.toString();
+        
+    }
+}
