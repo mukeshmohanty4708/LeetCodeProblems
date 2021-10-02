@@ -1,0 +1,54 @@
+31. Next Permutation
+The steps to solve this problem:
+1) scan from right to left, find the first element that is less than its previous one.
+2) scan from right to left, find the first element that is greater than p.
+3) swap p and q and reverse elements [p+1, nums.length]
+
+
+class Solution {
+    
+    public int[] alter(int[] nums, int p){
+        int i = p, j = nums.length - 1;
+         // System.out.println("inside 1: " + Arrays.toString(nums) + " " + i + j);
+        while(i < j){
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+            i++;
+            j--;
+        }
+        // System.out.println("inside 2: " + Arrays.toString(nums));
+        return nums;
+        
+    }
+    
+    public void nextPermutation(int[] nums) {
+        int pivot = 0; int change = 0;
+        for(int i = nums.length-1; i > 0; i--){
+            if(nums[i-1] < nums[i]){
+                change++;
+                pivot  = i - 1;
+                int q = nums.length - 1;
+                while(q > pivot){
+                    if(nums[q] > nums[pivot]){
+                        break;
+                    }
+                    q--;
+                }
+                //Swap p and q
+                int temp = nums[pivot];
+                nums[pivot] = nums[q];
+                nums[q] = temp;
+                // System.out.println(Arrays.toString(nums));
+                break;
+            }
+        }
+        // System.out.println(pivot);
+        if(pivot == 0 && change == 0) Arrays.sort(nums);
+        else nums = alter(nums, pivot+1); 
+        
+        
+    }
+}
+
+
